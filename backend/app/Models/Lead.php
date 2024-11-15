@@ -13,7 +13,7 @@ class Lead extends Model
     protected $fillable = [
         'name',
         'email',
-        'phone'
+        'phone',
     ];
 
     public function followUps(): HasMany

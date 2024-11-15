@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Exception;
 
 class FollowUpNotificationApiController extends Controller
 {
@@ -13,11 +14,27 @@ class FollowUpNotificationApiController extends Controller
      */
     public function index(Request $request)
     {
-        return $request->user()->unreadNotifications;
+        try {
+            $notifications = $request->user()->unreadNotifications;
+            return response()->json([
+                'remark' => 'all notifications',
+                'status' => 'success',
+                'data' => [
+                    'notifications' => $notifications
+                ],
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'remark' => 'failed fetching notifications',
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 
     /**
-     * Marl Notification as read
+     * Mark single notification as read
      */
     public function markAsRead(Request $request, $notificationId)
     {

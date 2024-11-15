@@ -31,7 +31,7 @@ class MarkMissedFollowUps implements ShouldQueue
     public function handle(): void
     {
         $users = User::all();
-        $overdueFollowUps = FollowUp::where('scheduled_at', '<', Carbon::now())
+        $overdueFollowUps = FollowUp::where('scheduled_at', '<', Carbon::now()->setTimezone('Africa/Kampala'))
             ->where('status', '!=', 'missed')
             ->get();
 

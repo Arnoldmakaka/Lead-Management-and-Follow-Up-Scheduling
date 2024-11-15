@@ -13,7 +13,7 @@ class FollowUp extends Model
     protected $fillable = [
         'lead_id',
         'scheduled_at',
-        'status'
+        'status',
     ];
 
     protected $casts = [

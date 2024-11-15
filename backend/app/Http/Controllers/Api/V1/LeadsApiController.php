@@ -22,8 +22,8 @@ class LeadsApiController extends Controller
         $leads = Lead::all();
 
         return response()->json([
-            'remark'    => 'all lead details',
-            'status'    => 'success',
+            'remark' => 'all lead details',
+            'status' => 'success',
             'data' => [
                 'leads' => LeadResource::collection($leads),
             ],
@@ -41,7 +41,7 @@ class LeadsApiController extends Controller
                 'email' => ['required', 'string', 'email', 'unique:leads,email'],
                 'phone' => ['required', 'string'],
             ], [
-                'title.unique' => 'The :attribute exists. Enter a new :attribute',
+                'email.unique' => 'The :attribute exists. Enter a new :attribute',
                 'required' => 'The :attribute is required. Please provide sufficient information.',
             ]);
 
@@ -55,7 +55,6 @@ class LeadsApiController extends Controller
 
             // Retrieve credentials
             $credentials = $request->all();
-
             $lead = Lead::create($credentials);
 
             return response()->json([

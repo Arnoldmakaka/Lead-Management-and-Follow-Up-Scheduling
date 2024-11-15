@@ -62,7 +62,7 @@ class FollowUpMissed extends Notification
             'message' => 'Missed a follow-up',
             'follow_up_id' => $this->followUpDetails['id'],
             'scheduled_at' => $this->followUpDetails['scheduled_at'],
-            'status' => 'Missed',
+            'status' => 'missed',
         ];
     }
 

@@ -24,8 +24,8 @@ class FollowUpApiController extends Controller
         $followups = FollowUp::all();
 
         return response()->json([
-            'remark'    => 'all follow up details',
-            'status'    => 'success',
+            'remark' => 'all follow up details',
+            'status' => 'success',
             'data' => [
                 'followups' => FollowUpResource::collection($followups),
             ],
@@ -39,8 +39,6 @@ class FollowUpApiController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        info($request->all());
-        info(Carbon::now()->setTimezone('Africa/Kampala'));
         try {
             $validator = Validator::make($request->all(), [
                 'lead_id' => ['required', 'exists:leads,id'],
@@ -54,7 +52,7 @@ class FollowUpApiController extends Controller
                 }]
             ], [
                 'required' => 'The :attribute is required. Please provide sufficient information.',
-                //'scheduled_at.date' => 'The scheduled date and time must be a valid date.',
+                'scheduled_at.date' => 'The scheduled date and time must be a valid date.',
             ]);
 
             if ($validator->fails()) {
@@ -100,7 +98,7 @@ class FollowUpApiController extends Controller
                 'status' => ['required', 'string', 'in:pending,completed,missed'],
             ], [
                 'required' => 'The :attribute is required. Please provide sufficient information.',
-                'status.in' => 'The :attribute must be one of the following: Pending, Completed, Missed.',
+                'status.in' => 'The :attribute must be one of the following: Completed, Missed.',
             ]);
 
             if ($validator->fails()) {
@@ -117,7 +115,7 @@ class FollowUpApiController extends Controller
                 'status' => $credentials['status']
             ]);
 
-            //$user = auth()->user();
+            //Dispatch Status changed event
             FollowUpStatusChanged::dispatch($followup);
 
             return response()->json([

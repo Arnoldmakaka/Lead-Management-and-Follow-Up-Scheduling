@@ -27,10 +27,7 @@ Route::middleware(['api'])->name('api.')->group(function () {
     //Login User
     Route::post('/login', [AuthenticationApiController::class, 'login']);
 
-    //Sign-up User
-    Route::post('/sign-up', [AuthenticationApiController::class, 'signUp']);
-
-    // leads api resource
+    // Leads api resource
     Route::apiResource('leads', LeadsApiController::class)->middleware('auth:sanctum')->only(['index', 'store']);
 
     // All followups
