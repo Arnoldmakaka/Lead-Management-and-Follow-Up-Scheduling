@@ -11,6 +11,7 @@ This repository contains the backend and frontend for a full-stack application d
 - [Getting Started](#getting-started)
   - [Backend Setup](#backend-setup)
   - [Frontend Setup](#frontend-setup)
+  - [Running Queues and Schedules](#running-queues-and-schedules)
 - [Usage](#usage)
   - [Seeded Test Users](#seeded-test-users)
 - [Features](#features)
@@ -89,6 +90,23 @@ To get the application running locally, follow these steps:
 3. Start the development server:
    ```bash
    npm start
+   ```
+
+### Running Queues and Schedules
+
+1. Start the Laravel queue worker:
+   ```bash
+   php artisan queue:work
+   ```
+
+2. Set up the Laravel scheduler. In a local environment, you can use the following command to run it manually:
+   ```bash
+   php artisan schedule:work
+   ```
+
+For production environments, configure a cron job to run the Laravel scheduler every minute:
+   ```bash
+   * * * * * php /path-to-your-project/artisan schedule:run >> /dev/null 2>&1
    ```
 
 ---
