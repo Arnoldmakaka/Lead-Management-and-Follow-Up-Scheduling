@@ -1,0 +1,15 @@
+.wrapper {
+  width: max-wh-100;
+  height: min-vh-100;
+  overflow-x: hidden;
+}
+
+.list-group a:hover {
+  background-color: #1e3c72;
+  color: white;
+}
+
+.active {
+  color: #fff;
+  background-color: #1e3c72;
+}
