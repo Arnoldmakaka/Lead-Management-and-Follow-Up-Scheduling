@@ -40,13 +40,12 @@ export default function Login() {
 		try {
 			setLoading(true);
 			const response = await api.post('/login', { email, password });
-			if(response.data.status == 'error') {
-				setErrors({ form: `${response.data.message}` });
-			}
 			if(response.data.status == 'success') {
 				const token = extractToken(response.data.data.access_token);
 				const userProfile = response.data.data.user;
 				login(token, userProfile);
+			} else {
+				setErrors({ form: `${response.data.message}` });
 			}
 		} catch (error) {
 			setErrors({ form: 'Login failed. Please check your credentials.' });
@@ -57,11 +56,13 @@ export default function Login() {
 
 	return (
 		<div className="d-flex align-items-center justify-content-center vh-100" style={{backgroundColor: '#1e3c72',}}>
-			<main className="form-signin w-100 m-auto p-4 rounded shadow" style={{ maxWidth: '400px', backgroundColor: 'white' }}>
-				<form onSubmit={handleSubmit}>
+			<main className="w-100 m-auto" >
+				<h2 className="text-center text-white">Lead Management and Follow-Up <br/> Scheduling Application</h2>
+				
+				<form onSubmit={handleSubmit} className="form-signin m-auto p-4 rounded shadow mt-4" style={{ maxWidth: '500px', backgroundColor: 'white' }}>
 					<h1 className="h3 mb-3 fw-normal text-center">Please sign in</h1>
 
-					{errors.form && <div className="alert alert-danger">{errors.form}</div>}
+					{errors.form && <div className="alert alert-danger text-center">{errors.form}</div>}
 
 					<div className="form-floating mb-3">
 						<input
@@ -90,7 +91,7 @@ export default function Login() {
 					</div>
 
 					<button
-						className="btn btn-primary w-100 py-2"
+						className="btn btn-primary w-100 py-2 mt-3"
 						type="submit"
 						disabled={loading}
 					>

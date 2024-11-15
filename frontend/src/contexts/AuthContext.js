@@ -23,12 +23,12 @@ export const AuthProvider = ({ children }) => {
 
     // Check for token and user data on first render
     useEffect(() => {
-        getAllNotifications();
         const token = localStorage.getItem('token');
         const storedUser = localStorage.getItem('user');
         if (token && storedUser) {
             setUser(JSON.parse(storedUser));
             setUserToken(token);
+            getAllNotifications();
         } else {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
@@ -38,22 +38,17 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
-    useEffect(() => {
-        notify();
-    }, [userNotifications]);
-
     const getAllNotifications = async () => {
         try {
             const response = await api.get('/notifications');
-            if(response.data) {
-                setUserNotifications(response.data);
+            if(response.data.data) {
+                setUserNotifications(response.data.data.notifications);
             }
         }catch (error) {
             console.log('Failed to fetch the notifications');
         } finally {
             setFailedFetchingNotification(true);
         }
-        await notify();
     }
 
     const login = (token, userData) => {
@@ -97,8 +92,6 @@ export const AuthProvider = ({ children }) => {
     const markAllNotificationsAsRead = async () => {
         try {
             const response = await api.post('/notifications/read');
-            console.log('successfully marked as read');
-            getAllFollowups();
         }catch (error) {
             console.log(error)
         } finally {
@@ -109,8 +102,6 @@ export const AuthProvider = ({ children }) => {
     const markCustomNotificationsAsRead = async (notification) => {
         try {
             const response = await api.post(`/notifications/${notification}/read`);
-            console.log('successfully marked as read');
-            getAllFollowups();
         }catch (error) {
             console.log(error)
         } finally {
@@ -131,10 +122,18 @@ export const AuthProvider = ({ children }) => {
     const CustomMessage = ({ closeToast, toastProps, Details }) => (
         <div>{`Follow up scheduled at ${format(Details.data.scheduled_at, "MMMM dd/yyyy hh:mm aa")} is overdue and has been makered as "Missed"`}</div>
     );
-    const closeCurrentNotification = (notification) => markCustomNotificationsAsRead(notification.id);
+    const closeCurrentNotification = async (notification) => {
+        try {
+            await markCustomNotificationsAsRead(notification.id);
+            setUserNotifications((prev) => prev.filter((n) => n.id !== notification.id));
+            await getAllNotifications();
+        } catch (error) {
+            console.error("Failed to mark notification as read:", error);
+        }
+    }
 
     return (
-        <AuthContext.Provider value={{ user, userToken, login, logout, getAllLeads, allLeads, setActiveFollowUpDetails, activeFollowUp, getAllFollowups, allFollowUps, getAllNotifications, notify}}>
+        <AuthContext.Provider value={{ user, userToken, login, logout, getAllLeads, allLeads, setActiveFollowUpDetails, activeFollowUp, getAllFollowups, allFollowUps, getAllNotifications, notify, userNotifications}}>
             {/* Render children only when loading is false */}
             {!loading && children}
         </AuthContext.Provider>

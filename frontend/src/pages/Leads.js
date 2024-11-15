@@ -37,14 +37,14 @@ export default function Leads() {
 		<div>
 			<NavLink
 				to="/leads/create"
-	        	className="btn btn-success mb-4"
+	        	className="btn btn-success mb-3"
 	        >
 				Create new lead
 			</NavLink>
 
 			<div className="card table-responsive p-4">
 				{fetchingError && <div className="alert alert-danger mb-2">{fetchingError}</div>}
-				<caption>List of Leads</caption>
+				<p>List of Leads</p>
 				<table className="table table-striped table-bordered">
 					<thead>
 						<tr>

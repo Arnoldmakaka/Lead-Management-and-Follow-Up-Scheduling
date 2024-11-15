@@ -14,7 +14,7 @@ export default function FollowUpUpdate() {
 	const [errors, setErrors] = useState({});
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
-	const { activeFollowUp, getAllFollowups, allFollowUps, getAllNotifications, notify } = useContext(AuthContext);
+	const { activeFollowUp, getAllFollowups, allFollowUps, getAllNotifications } = useContext(AuthContext);
 	const { id } = useParams();
 
 	useEffect(() => {
@@ -59,7 +59,6 @@ export default function FollowUpUpdate() {
 			const response = await api.put(`/followups/${selectedFollowUp.id}/status`, { status });
 			if(response.data.status == 'success') {
 				await getAllNotifications();
-				notify();
 				navigate('/follow-ups', { replace: true });
 			} else {
 				setErrors({ form: `${response.data.message}` });

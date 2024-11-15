@@ -4,10 +4,13 @@ import { AuthContext } from '../contexts/AuthContext';
 import Sidebar from './Sidebar';
 import './Dashboard.css';
 import 'bootstrap/js/dist/dropdown';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { subDays, setHours, setMinutes, format } from 'date-fns';
 
 export default function Dashboard() {
 
-	const { logout, user } = useContext(AuthContext);
+	const { logout, user, getAllNotifications, notify } = useContext(AuthContext);
 	const handleLogout = () => logout();
 
 	const [userProfile, setUserProfile] = useState(null);
@@ -17,6 +20,11 @@ export default function Dashboard() {
 			setUserProfile(user);
 		}
 	}, [user]);
+
+	useEffect(() => {
+        getAllNotifications();
+    }, []);
+
 
 	return (
 		<div className="wrapper bg-light min-vh-100">
@@ -41,6 +49,19 @@ export default function Dashboard() {
 					</main>
 				</div>
 			</div>
+
+			<ToastContainer 
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={true}
+                autoClose={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
 		</div>
 	);
 }

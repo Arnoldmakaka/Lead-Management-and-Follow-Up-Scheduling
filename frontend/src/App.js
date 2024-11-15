@@ -8,21 +8,13 @@ import Lead from './pages/Lead';
 import FollowUps from './pages/FollowUps';
 import FollowUp from './pages/FollowUp';
 import FollowUpUpdate from './pages/FollowUpUpdate';
-import 'react-toastify/dist/ReactToastify.css';
-import { subDays, setHours, setMinutes, format } from 'date-fns';
-import { ToastContainer, toast } from 'react-toastify';
+
 
 function App() {
         
-    const { userToken, user, getAllNotifications, notify} = useContext(AuthContext);
-
-    useEffect(() => {
-        getAllNotifications();
-        notify();
-    }, []);
-
+    const { userToken, user} = useContext(AuthContext);
+    
     return (
-        <>
         <Routes>
             {userToken ? (
                 <>
@@ -47,20 +39,6 @@ function App() {
                 </>
             )}
         </Routes>
-
-        <ToastContainer 
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={true}
-                autoClose={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
-        </>
     );
 }
 export default App;
