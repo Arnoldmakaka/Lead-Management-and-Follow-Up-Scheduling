@@ -10,7 +10,7 @@ export default function FollowUps() {
 	const [followUpDetails, setFollowUpDetails] = useState([]);
 	const [loadingDetails, setLoadingDetails] = useState(false);
 	const [fetchingError, setFetchingError] = useState(null);
-	const { setActiveFollowUpDetails, getAllFollowups, user, allFollowUps, notify, userNotifications, getAllNotifications} = useContext(AuthContext);
+	const { setActiveFollowUpDetails, getAllFollowups, user, allFollowUps } = useContext(AuthContext);
 	const navigate = useNavigate();
 
 	const getFollowUpDetails = async () => {
@@ -27,13 +27,7 @@ export default function FollowUps() {
 
 	useEffect(() => {
 		getFollowUpDetails();
-		getFollowUpNotifications();
 	}, []);
-
-	const getFollowUpNotifications = async () => {
-		await getAllNotifications();
-		notify();
-	}
 
 	useEffect(() => {
 		if(allFollowUps){

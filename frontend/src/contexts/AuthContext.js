@@ -21,6 +21,10 @@ export const AuthProvider = ({ children }) => {
     const [failedFetchingNotification, setFailedFetchingNotification] = useState(false)
     const navigate = useNavigate();
 
+    useEffect(() => {
+        notify();
+    }, [userNotifications]);
+
     // Check for token and user data on first render
     useEffect(() => {
         const token = localStorage.getItem('token');
